@@ -5,13 +5,11 @@
  */
 package cacaserver;
 
-import cacaserver.pojos.Login;
-import cacaserver.pojos.Messages;
+import cacaserver.pojos.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 
 /**
@@ -89,7 +87,7 @@ public class CACAServer {
             responseList = response.get("args").getAsJsonArray();
             ArrayList<User> userList = new ArrayList<>();
             responseList.forEach(u ->
-            { 
+            {
                 JsonObject user = u.getAsJsonObject();
                 User cUser = new User(user.get("username").getAsString(),user.get("alias").getAsString());
                 userList.add(cUser);
@@ -100,54 +98,6 @@ public class CACAServer {
                 System.out.println("Usuario: "+u.getUsername()+" Alias: "+u.getAlias());
             });
         }
-        
-       
-        
-        
-        
-        /*
-        //Creación
-        Messages send = new Messages();
-        send.setType("connected-users");
-        ArrayList<User> usuarios = new ArrayList<>();
-        for (int i = 0; i < 10; i++) 
-        { 
-            User user = new User("ivan","no ivan");
-            usuarios.add(user);
-        }
-        
-        send.setArgs(usuarios);
-        
-        Gson gson = new Gson();
-        String msg = gson.toJson(send);
-        
-        System.out.println(""+msg);
-        
-        
-        //Recepción
-        
-        Messages rcv = gson.fromJson(msg, Messages.class);
-        
-        ArrayList<Object> uss = gson.fromJson(rcv.getArgs().toString(), ArrayList.class);
-        
-        for (int i = 0; i < uss.size(); i++) {
-            
-        }
-       
-        System.out.println(rcv.getType());
-        //En este punto se verifica type para saber qué hacer ajaj
-        
-        System.out.println(rcv.getArgs());
-        ArrayList<User> uss = gson.fromJson(rcv.getArgs().toString(), new TypeToken<ArrayList<User>>(){}.getType());
-        //UserList us = gson.fromJson(rcv.getArgs().toString(), UserList.class);
-        
-       /*
-        for (int i = 0; i < 10; i++) 
-        { 
-            User u = gson.fromJson(us.toString(), User.class);
-            System.out.println(u.getUsername());
-            
-        }*/
     }
     
 }

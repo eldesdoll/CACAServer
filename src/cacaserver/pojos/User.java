@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cacaserver;
+package cacaserver.pojos;
 
 /**
  *
@@ -30,7 +30,7 @@ public class User
         this.alias = alias;
     }
     
-    User(String username, String alias)
+    public User(String username, String alias)
     {
         this.username = username;
         this.alias = alias;

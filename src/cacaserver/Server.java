@@ -75,11 +75,9 @@ public class Server
                         {
                             byte data[] = new byte[size];
                             in.read(data);
-                            /**
-                             * AQUÍ VA TODO EL PROCESAMIENTO 
-                             * DE PETICIONES, AQUÍ SE CONVIERTE A
-                             * JSON Y LLAMAN A LAS FUNCIONES CORRESPONDIENTES
-                             */
+                            
+                            
+                            
                             System.out.println(new String(data));
                         }
                     } 
