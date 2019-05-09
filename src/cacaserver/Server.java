@@ -81,14 +81,19 @@ public class Server
                             
                             TaskManager.equeue(() -> 
                             { 
-                                try {
-                                    String response = ProcessRequest.processRequest(new String(data));
-                                    System.out.println(response);
-                                    OutputStream out = current.getOutputStream();
-                                    byte resp[] = response.getBytes();
-                                    out.write(resp);
-                                } catch (IOException ex) {
-                                    logger.log(Level.SEVERE,ex.getMessage());
+                                synchronized(current)
+                                {
+                                    try 
+                                    {
+                                        String response = ProcessRequest.processRequest(new String(data));
+                                        logger.info("Data_: "+response+" sent to "+current.getInetAddress());
+                                        OutputStream out = current.getOutputStream();
+                                        byte resp[] = response.getBytes();
+                                        out.write(resp);
+                                    }
+                                    catch (IOException ex) {
+                                        logger.log(Level.SEVERE,ex.getMessage());
+                                    }
                                 }
                             });
                                                         
@@ -116,7 +121,8 @@ public class Server
                 try
                 {
                     OutputStream out = current.getOutputStream();
-                    out.write(0);
+                    byte[] ping = "p".getBytes();
+                    out.write(ping);
                     out.flush();
                 }
                 catch(IOException ex)
@@ -128,11 +134,11 @@ public class Server
             clients.removeAll(deads);
             clients.notify();
         }
-        try 
+        try
         {
-            Thread.sleep(100);
+            Thread.sleep(1000);
             TaskManager.equeue(this::deleteDeads);
-        } 
+        }
         catch (InterruptedException ex) 
         {
             logger.log(Level.SEVERE, ex.getMessage());

@@ -58,19 +58,22 @@ public class ProcessRequest
             PreparedStatement st = connection.prepareStatement(query);
             ResultSet result = st.executeQuery();
             
-            while(result.next())
+            if(!result.next())
             {
-                pass = new String(result.getString("password"));
-            }
-
-            if(pass.equals(password))
-            {
-                response = "ok";
-                //Aquí se crean todos los métodos de obtener cosas ajjja;
+                response="not ok";
             }
             else 
             {
-                response = "!ok";
+                pass = new String(result.getString("password"));
+                if(pass.equals(password))
+                {
+                    response = "ok";
+                    //Aquí se crean todos los métodos de obtener cosas ajjja;
+                }
+                else 
+                {
+                    response = "not ok";
+                }
             }
         }
         catch(SQLException  ex)
