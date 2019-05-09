@@ -10,7 +10,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,8 +25,8 @@ public class CACAServer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) 
-    {
+    public static void main(String[] args) {
+        Server server = new Server(5000);
         /*
         //Prueba de envio de mensaje simple
         
@@ -44,9 +48,9 @@ public class CACAServer {
         System.out.println(response.get("type").getAsString());
         
         System.out.println(response.get("args").getAsJsonObject().get("username").getAsString());
-        */
-        
-        JsonObject envio = new JsonObject();
+         */
+
+ /*JsonObject envio = new JsonObject();
         envio.addProperty("type", "connected-users");
         
         JsonArray list = new JsonArray();
@@ -69,6 +73,7 @@ public class CACAServer {
         
         envio.add("args", list);
         
+        
         Gson gson = new Gson();
         String output = gson.toJson(envio);
         System.out.println(output);
@@ -82,7 +87,7 @@ public class CACAServer {
         response = parser.parse(output).getAsJsonObject();
         
         if(response.get("type").getAsString().equals("connected-users"))
-        {
+        { 
             JsonArray responseList = new JsonArray();
             responseList = response.get("args").getAsJsonArray();
             ArrayList<User> userList = new ArrayList<>();
@@ -97,7 +102,6 @@ public class CACAServer {
             {
                 System.out.println("Usuario: "+u.getUsername()+" Alias: "+u.getAlias());
             });
-        }
+        }*/
     }
-    
 }

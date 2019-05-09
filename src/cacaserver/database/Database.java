@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package database;
+package cacaserver.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
@@ -16,19 +16,33 @@ import java.util.concurrent.locks.Lock;
  */
 public class Database 
 { 
-    private Lock lock;
+    private ReentrantLock lock = new ReentrantLock();
     static private Connection connection;
     
     static 
-    { 
+    {
         try 
         {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/paises","root","");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/cacabase","root","");
         }
         catch (ClassNotFoundException | SQLException ex) 
         {
             System.out.println(ex.getMessage());
         }
-    } 
+    }
+    
+    public Connection getConnection()
+    {
+        synchronized(connection)
+        { 
+            lock.lock();
+            return this.connection;
+        } 
+    }
+    
+    public void unLock()
+    {
+        this.lock.unlock();
+    }
 }

@@ -5,6 +5,8 @@
  */
 package cacaserver;
 
+import cacaserver.controller.ProcessRequest;
+import cacaserver.tasker.Task;
 import cacaserver.tasker.TaskManager;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,8 +79,19 @@ public class Server
                             in.read(data);
                             
                             
-                            
-                            System.out.println(new String(data));
+                            TaskManager.equeue(() -> 
+                            { 
+                                try {
+                                    String response = ProcessRequest.processRequest(new String(data));
+                                    System.out.println(response);
+                                    OutputStream out = current.getOutputStream();
+                                    byte resp[] = response.getBytes();
+                                    out.write(resp);
+                                } catch (IOException ex) {
+                                    logger.log(Level.SEVERE,ex.getMessage());
+                                }
+                            });
+                                                        
                         }
                     } 
                     catch (IOException ex) 
@@ -90,6 +103,7 @@ public class Server
             }
         }
     }
+    
     
     public void deleteDeads()
     {
