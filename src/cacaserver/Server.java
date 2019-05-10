@@ -77,23 +77,17 @@ public class Server
                         {
                             byte data[] = new byte[size];
                             in.read(data);
-                            
-                            
                             TaskManager.equeue(() -> 
-                            { 
-                                synchronized(current)
-                                {
-                                    try 
-                                    {
-                                        String response = ProcessRequest.processRequest(new String(data));
-                                        logger.info("Data_: "+response+" sent to "+current.getInetAddress());
-                                        OutputStream out = current.getOutputStream();
-                                        byte resp[] = response.getBytes();
-                                        out.write(resp);
-                                    }
-                                    catch (IOException ex) {
-                                        logger.log(Level.SEVERE,ex.getMessage());
-                                    }
+                            {
+                                try {
+                                    
+                                    String response = ProcessRequest.processRequest(new String(data));
+                                    logger.info("Data "+response+" sent to "+current.getInetAddress());
+                                    OutputStream out = current.getOutputStream();
+                                    byte resp[] = response.getBytes();
+                                    out.write(resp);
+                                } catch (IOException ex) {
+                                    logger.log(Level.SEVERE,ex.getMessage());
                                 }
                             });
                                                         
@@ -121,8 +115,7 @@ public class Server
                 try
                 {
                     OutputStream out = current.getOutputStream();
-                    byte[] ping = "p".getBytes();
-                    out.write(ping);
+                    out.write(0);
                     out.flush();
                 }
                 catch(IOException ex)
@@ -134,11 +127,11 @@ public class Server
             clients.removeAll(deads);
             clients.notify();
         }
-        try
+        try 
         {
             Thread.sleep(1000);
             TaskManager.equeue(this::deleteDeads);
-        }
+        } 
         catch (InterruptedException ex) 
         {
             logger.log(Level.SEVERE, ex.getMessage());

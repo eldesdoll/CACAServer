@@ -36,13 +36,16 @@ public class Database
     {
         synchronized(connection)
         { 
-            lock.lock();
-            return this.connection;
+            return lock.tryLock() ? this.connection : null;
         } 
     }
     
-    public void unLock()
+    public boolean unLock()
     {
-        this.lock.unlock();
+        if(this.lock.isHeldByCurrentThread()){
+            this.lock.unlock();
+            return true;
+        }
+        return false;
     }
 }

@@ -6,6 +6,7 @@
 package cacaserver.controller;
 
 import cacaserver.database.Database;
+import cacaserver.tasker.TaskManager;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.sql.Connection;
@@ -48,6 +49,7 @@ public class ProcessRequest
     {
         String username = args.get("username").getAsString();
         String password = args.get("password").getAsString();
+        
         String pass=null, response = "";
         
         Connection connection = db.getConnection();
@@ -57,6 +59,7 @@ public class ProcessRequest
             String query = "SELECT password FROM usuario WHERE username='"+username+"'";
             PreparedStatement st = connection.prepareStatement(query);
             ResultSet result = st.executeQuery();
+            
             
             if(!result.next())
             {
