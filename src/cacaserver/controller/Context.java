@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.logging.Logger;
 
 /**
  *
@@ -19,9 +18,9 @@ public class Context
 { 
     private ServerSocket server;
     private ArrayList<Socket> clients;
-    private Hashtable<String, Socket> connectedUsers;
+    private Hashtable<Socket, String> connectedUsers;
     
-    public Context(ServerSocket server, ArrayList<Socket> clients, Hashtable<String, Socket> connectedUsers)
+    public Context(ServerSocket server, ArrayList<Socket> clients, Hashtable<Socket, String> connectedUsers)
     {
         this.server = server;
         this.clients = clients;
@@ -44,11 +43,28 @@ public class Context
         this.clients = clients;
     }
 
-    public Hashtable<String, Socket> getConnectedUsers() {
+    public Hashtable<Socket, String> getConnectedUsers() {
         return connectedUsers;
     }
 
-    public void setConnectedUsers(Hashtable<String, Socket> connectedUsers) {
+    public void setConnectedUsers(Hashtable<Socket, String> connectedUsers) {
         this.connectedUsers = connectedUsers;
+    }
+    
+    public ArrayList<Socket> getSocketsByUsername(String user)
+    {
+        ArrayList<Socket> connectedOn = new ArrayList<>();
+        synchronized(connectedUsers)
+        {
+            connectedUsers.forEach((socket, username) -> 
+            {
+               if(username.equals(user))
+               {
+                   connectedOn.add(socket);
+               }
+            });
+            connectedUsers.notify();
+        }
+        return connectedOn;
     }
 }

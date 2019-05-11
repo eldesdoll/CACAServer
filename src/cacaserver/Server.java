@@ -32,7 +32,7 @@ public class Server
     private ServerSocket server;
     private ArrayList<Socket> clients;
     private Logger logger;
-    private Hashtable<String, Socket> connectedUsers;
+    private Hashtable<Socket, String> connectedUsers;
     private Context context;
     
     /**
@@ -110,7 +110,7 @@ public class Server
                 try
                 {
                     OutputStream out = current.getOutputStream();
-                    out.write(0);
+                    out.write("p".getBytes());
                     out.flush();
                 }
                 catch(IOException ex)
@@ -121,10 +121,11 @@ public class Server
             }
             synchronized(connectedUsers)
             {
-                connectedUsers.forEach((username, connection)->
+                connectedUsers.forEach((socket, username)->
                 {
-                    if(deads.contains(connection))
+                    if(deads.contains(socket))
                     {
+                        logger.info(username+" has disconnected :(");
                         connectedUsers.remove(username);
                     }
                 });
@@ -135,7 +136,7 @@ public class Server
         }
         try
         {
-            Thread.sleep(1000);
+            Thread.sleep(100);
             TaskManager.equeue(this::deleteDeads);
         } 
         catch (InterruptedException ex) 

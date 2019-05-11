@@ -51,7 +51,7 @@ public class Database
             try 
             {
                 Connection newConnection = DriverManager.getConnection("jdbc:mysql://localhost/"+database,user,password);
-                logger.info("Thread "+Thread.currentThread().getId()+" requested a new connection");
+                logger.info("Thread "+Thread.currentThread().getId()+" requested a new database connection");
                 return newConnection;
             } 
             catch (SQLException ex) 
@@ -68,7 +68,7 @@ public class Database
     
     public static void returnConnection(Connection connection)
     {
-        logger.info("Thread "+Thread.currentThread().getId()+" returned a connection");
+        logger.info("Thread "+Thread.currentThread().getId()+" returned a database connection");
         pool.addLast(connection);
     }
 }

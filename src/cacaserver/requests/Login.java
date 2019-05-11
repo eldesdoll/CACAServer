@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +30,8 @@ public class Login
     private String password;
     private static Logger logger;
     private Connection connection;
+    private Context context;
+    private Socket sender;
     
     static
     {
@@ -37,6 +40,8 @@ public class Login
     
     public Login(JsonObject args, Socket sender, Context context)
     {
+        this.sender = sender;
+        this.context = context;
         this.username = args.get("username").getAsString();
         this.password = args.get("password").getAsString();
                 
@@ -69,6 +74,13 @@ public class Login
         response.addProperty("status", statusCode);
         if(statusCode)
         {
+            Hashtable connected = context.getConnectedUsers();
+            synchronized(connected)
+            {
+                logger.info(username +" just logged in with IP "+sender.getInetAddress());
+                connected.put(sender, username);
+                connected.notify();
+            }
             /**
              * Agregar listas.
              */
@@ -99,5 +111,4 @@ public class Login
             return false;
         }
     }
- 
 }
