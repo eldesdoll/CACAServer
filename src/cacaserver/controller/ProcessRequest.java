@@ -5,10 +5,13 @@
  */
 package cacaserver.controller;
 
+import cacaserver.requests.AcceptGroupRequest;
 import cacaserver.requests.AcceptRequest;
+import cacaserver.requests.AddToGroup;
 import cacaserver.requests.FriendRequest;
 import cacaserver.requests.Login;
 import cacaserver.requests.NewGroup;
+import cacaserver.requests.Refresh;
 import cacaserver.requests.Sign;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,21 +47,28 @@ public class ProcessRequest
         switch(response.get("type").getAsString())
         {
             case "login":
-                Login login = new Login(response.get("args").getAsJsonObject(),sender, context); 
+                new Login(response.get("args").getAsJsonObject(),sender, context); 
                 break;
             case "sign":
-                Sign sign = new Sign(response.get("args").getAsJsonObject(),sender);
+                new Sign(response.get("args").getAsJsonObject(),sender);
                 break;
             case "friend-request":
-                FriendRequest friend = new FriendRequest(response.get("args").getAsJsonObject(),sender, context);
+                new FriendRequest(response.get("args").getAsJsonObject(),sender, context);
                 break;
-            case "accept-request":
-                AcceptRequest req = new AcceptRequest(response.get("args").getAsJsonObject(),sender, context);
+            case "accept-request": //Aceptar amigo 
+                new AcceptRequest(response.get("args").getAsJsonObject(),sender, context);
                 break;
-            case "newGroup":
-                System.out.println("aqui");
-                NewGroup nGroup = new NewGroup(response.get("args").getAsJsonObject(), sender);
+            case "newGroup": //Nuevo grupo 
+                new NewGroup(response.get("args").getAsJsonObject(), sender,context);
                 break;
+            case "add-to-group":  //Agregar al grupo
+                new AddToGroup(response.get("args").getAsJsonObject(), sender, context);
+                break;
+            case "accept-group-request": //Aceptar solicitud de grupo
+                new AcceptGroupRequest(response.get("args").getAsJsonObject(),sender,context);
+                break;
+            case "refresh": //Refrescar 
+                new Refresh(response.get("args").getAsJsonObject(),sender,context);
             default:
                 break;
         }

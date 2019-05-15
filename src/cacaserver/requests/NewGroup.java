@@ -36,7 +36,7 @@ public class NewGroup {
         logger = Logger.getLogger("NewGroup");
     }
     
-    public NewGroup(JsonObject args, Socket sender)
+    public NewGroup(JsonObject args, Socket sender, Context context)
     {
        try {
             this.sender = sender;
@@ -47,6 +47,9 @@ public class NewGroup {
             JsonObject response = new JsonObject();
             response.addProperty("type", "newGroup");
             response.addProperty("status", getGroup());
+            
+            Login upd = new Login(context);
+            response.add("args", upd.updateArgs(username));
             
             logger.info("New group registered with status code "+response.get("status").getAsBoolean());
             
@@ -74,7 +77,6 @@ public class NewGroup {
             query = "INSERT INTO grupo(asunto, administrador) VALUES ('"+gname+"','"+username+"')";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
- 
             return true;
         }
         catch(SQLException  ex)
