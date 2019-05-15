@@ -6,6 +6,7 @@
 package cacaserver.controller;
 
 import cacaserver.requests.AcceptRequest;
+import cacaserver.requests.AddToGroup;
 import cacaserver.requests.FriendRequest;
 import cacaserver.requests.Login;
 import cacaserver.requests.NewGroup;
@@ -56,8 +57,12 @@ public class ProcessRequest
                 AcceptRequest req = new AcceptRequest(response.get("args").getAsJsonObject(),sender, context);
                 break;
             case "newGroup":
-                System.out.println("aqui");
-                NewGroup nGroup = new NewGroup(response.get("args").getAsJsonObject(), sender);
+                NewGroup nGroup = new NewGroup(response.get("args").getAsJsonObject(), sender,context);
+                break;
+            case "add-to-group":
+                AddToGroup atg = new AddToGroup(response.get("args").getAsJsonObject(), sender, context);
+                break;
+            case "accept-group-request":
                 break;
             default:
                 break;
