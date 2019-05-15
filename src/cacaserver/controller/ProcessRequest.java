@@ -8,9 +8,12 @@ package cacaserver.controller;
 import cacaserver.requests.AcceptGroupRequest;
 import cacaserver.requests.AcceptRequest;
 import cacaserver.requests.AddToGroup;
+import cacaserver.requests.DeleteGroup;
 import cacaserver.requests.FriendRequest;
 import cacaserver.requests.Login;
+import cacaserver.requests.ModifyGroup;
 import cacaserver.requests.NewGroup;
+import cacaserver.requests.NewPersonalMssg;
 import cacaserver.requests.Refresh;
 import cacaserver.requests.Sign;
 import com.google.gson.JsonObject;
@@ -69,6 +72,16 @@ public class ProcessRequest
                 break;
             case "refresh": //Refrescar 
                 new Refresh(response.get("args").getAsJsonObject(),sender,context);
+                break;
+            case "deleteGroup":
+                new DeleteGroup (response.get("args").getAsJsonObject(), sender, context);
+                break;
+            case "modifyGroup":
+                new ModifyGroup (response.get("args").getAsJsonObject(), sender, context);
+                break;
+            case "newPersonal":
+                new NewPersonalMssg (response.get("args").getAsJsonObject(), sender, context);
+                break;
             default:
                 break;
         }
