@@ -8,6 +8,7 @@ package cacaserver.controller;
 import cacaserver.requests.AcceptRequest;
 import cacaserver.requests.FriendRequest;
 import cacaserver.requests.Login;
+import cacaserver.requests.NewGroup;
 import cacaserver.requests.Sign;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -53,6 +54,10 @@ public class ProcessRequest
                 break;
             case "accept-request":
                 AcceptRequest req = new AcceptRequest(response.get("args").getAsJsonObject(),sender, context);
+                break;
+            case "newGroup":
+                System.out.println("aqui");
+                NewGroup nGroup = new NewGroup(response.get("args").getAsJsonObject(), sender);
                 break;
             default:
                 break;
