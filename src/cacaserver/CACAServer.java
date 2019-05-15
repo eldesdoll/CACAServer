@@ -5,19 +5,8 @@
  */
 package cacaserver;
 
-import cacaserver.pojos.User;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import java.io.IOException;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
- *
+ * Clase ejecutable, solo instancia al servidor
  * @author ivan_
  */
 public class CACAServer {
@@ -26,31 +15,31 @@ public class CACAServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Server server = new Server(5000);
-        /*
+        Server server = new Server(1000);
+
+        /* 
         //Prueba de envio de mensaje simple
-        
         Messages send = new Messages();
         send.setType("login");
         Login arguments = new Login();
         arguments.setPassword("123");
         arguments.setUsername("ivxn");
         send.setArgs(arguments);
-        
+
         Gson gson = new Gson();
         String msg = gson.toJson(send);
-        
+
         System.out.println(msg);
-        
+
         JsonParser parser = new JsonParser();
         JsonObject response = parser.parse(msg).getAsJsonObject();
-        
-        System.out.println(response.get("type").getAsString());
-        
-        System.out.println(response.get("args").getAsJsonObject().get("username").getAsString());
-         */
 
- /*JsonObject envio = new JsonObject();
+        System.out.println(response.get("type").getAsString());
+
+        System.out.println(response.get("args").getAsJsonObject().get("username").getAsString());
+          */
+
+    /*JsonObject envio = new JsonObject();
         envio.addProperty("type", "connected-users");
         
         JsonArray list = new JsonArray();
@@ -102,6 +91,7 @@ public class CACAServer {
             {
                 System.out.println("Usuario: "+u.getUsername()+" Alias: "+u.getAlias());
             });
-        }*/
+        }
+    }*/
     }
 }

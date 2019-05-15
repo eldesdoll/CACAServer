@@ -5,8 +5,8 @@
  */
 package cacaserver;
 
+import cacaserver.controller.Context;
 import cacaserver.controller.ProcessRequest;
-import cacaserver.tasker.Task;
 import cacaserver.tasker.TaskManager;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +32,8 @@ public class Server
     private ServerSocket server;
     private ArrayList<Socket> clients;
     private Logger logger;
+    private Hashtable<Socket, String> connectedUsers;
+    private Context context;
     
     /**
      * Constructor que inicializa el servidor
@@ -44,6 +47,7 @@ public class Server
     Server(int port) //La excepcion se envía quien invocó el método (main)
     {
         clients = new ArrayList<>();
+        connectedUsers = new Hashtable<>();
         logger = Logger.getLogger("Server");
         try 
         {
@@ -58,6 +62,7 @@ public class Server
         TaskManager.equeue(this::deleteDeads);
         TaskManager.equeue(this::getConnections);
         
+        context = new Context(server, clients, connectedUsers);
     }
     
     public void getData()
@@ -77,21 +82,10 @@ public class Server
                         {
                             byte data[] = new byte[size];
                             in.read(data);
-                            
-                            
                             TaskManager.equeue(() -> 
-                            { 
-                                try {
-                                    String response = ProcessRequest.processRequest(new String(data));
-                                    System.out.println(response);
-                                    OutputStream out = current.getOutputStream();
-                                    byte resp[] = response.getBytes();
-                                    out.write(resp);
-                                } catch (IOException ex) {
-                                    logger.log(Level.SEVERE,ex.getMessage());
-                                }
-                            });
-                                                        
+                            {
+                                ProcessRequest.processRequest(new String(data),current,context);
+                            });                               
                         }
                     } 
                     catch (IOException ex) 
@@ -116,7 +110,7 @@ public class Server
                 try
                 {
                     OutputStream out = current.getOutputStream();
-                    out.write(0);
+                    out.write("p".getBytes());
                     out.flush();
                 }
                 catch(IOException ex)
@@ -125,12 +119,24 @@ public class Server
                     logger.info(current.getInetAddress()+" has left the room");
                 }
             }
+            synchronized(connectedUsers)
+            {
+                connectedUsers.forEach((socket, username)->
+                {
+                    if(deads.contains(socket))
+                    {
+                        logger.info(username+" has disconnected :(");
+                        connectedUsers.remove(username);
+                    }
+                });
+                connectedUsers.notify();
+            }
             clients.removeAll(deads);
             clients.notify();
         }
-        try 
+        try
         {
-            Thread.sleep(100);
+            Thread.sleep(2000);
             TaskManager.equeue(this::deleteDeads);
         } 
         catch (InterruptedException ex) 
