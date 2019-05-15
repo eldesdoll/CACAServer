@@ -23,10 +23,11 @@ import java.util.logging.Logger;
  *
  * @author manie
  */
-public class DeleteGroup {
+public class ModifyGroup {
 
     private String username;
     private String gId;
+    private String gName;
     private static Logger logger;
     private Connection connection;
     private Context context;
@@ -36,16 +37,17 @@ public class DeleteGroup {
         logger = Logger.getLogger("DeleteGroup");
     }
     
-    public DeleteGroup(JsonObject args, Socket sender, Context context) {
+    public ModifyGroup(JsonObject args, Socket sender, Context context) {
         try {
             this.sender = sender;
             this.username = args.get("admin").getAsString();
             this.gId = args.get("groupId").getAsString();
+            this.gName = args.get("name").getAsString();
             connection = Database.getConnection();
             if (getAdmin().equals(username)) {
                 JsonObject response = new JsonObject();
-                response.addProperty("type", "deleteGroup");
-                response.addProperty("status", deleteGroup());
+                response.addProperty("type", "modifyGroup");
+                response.addProperty("status", modifyGroup());
 
                 Login upd = new Login(context);
                 response.add("args", upd.updateArgs(username));
@@ -86,13 +88,13 @@ public class DeleteGroup {
  
     }
     
-    private boolean deleteGroup() {
+    private boolean modifyGroup() {
         connection = Database.getConnection();
         
         try {
             
             String query;
-            query = "DELETE FROM grupo WHERE id = "+gId;
+            query = "UPDATE grupo SET asunto = '"+gName+"' WHERE id = "+gId;
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
             return true;
