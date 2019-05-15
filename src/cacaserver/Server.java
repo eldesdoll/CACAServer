@@ -121,13 +121,18 @@ public class Server
             }
             synchronized(connectedUsers)
             {
-                connectedUsers.forEach((socket, username)->
+                ArrayList<Socket> toKill = new ArrayList<>();
+                connectedUsers.forEach((Csocket, username)->
                 {
-                    if(deads.contains(socket))
+                    if(deads.contains(Csocket))
                     {
                         logger.info(username+" has disconnected :(");
-                        connectedUsers.remove(username);
+                        toKill.add(Csocket);
                     }
+                });
+                toKill.forEach(kSocket ->
+                {
+                    connectedUsers.remove(kSocket);
                 });
                 connectedUsers.notify();
             }

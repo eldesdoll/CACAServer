@@ -5,11 +5,14 @@
  */
 package cacaserver.controller;
 
+import cacaserver.requests.AcceptRequest;
+import cacaserver.requests.FriendRequest;
 import cacaserver.requests.Login;
 import cacaserver.requests.Sign;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,10 +21,12 @@ import java.net.Socket;
 public class ProcessRequest 
 {
     private static JsonParser parser;
+    private static Logger logger;
     
     static 
     {
         parser = new JsonParser();
+        logger = Logger.getLogger("ProcessRequest");
     }
     
     /***
@@ -33,19 +38,21 @@ public class ProcessRequest
      */
     public static void processRequest(String request, Socket sender, Context context) 
     {
-        System.out.println("Recibí info");
+        logger.info("Got a package from "+sender.getInetAddress());
         JsonObject response = parser.parse(request).getAsJsonObject();
         switch(response.get("type").getAsString())
         {
             case "login":
                 Login login = new Login(response.get("args").getAsJsonObject(),sender, context); 
-                /**
-                 * Aquí sí necesitaré el contexto, porque requiero enviar los
-                 * usuarios conectados (si hay éxito) (que no puedo obtener directamente de la DB)
-                 */
                 break;
             case "sign":
                 Sign sign = new Sign(response.get("args").getAsJsonObject(),sender);
+                break;
+            case "friend-request":
+                FriendRequest friend = new FriendRequest(response.get("args").getAsJsonObject(),sender, context);
+                break;
+            case "accept-request":
+                AcceptRequest req = new AcceptRequest(response.get("args").getAsJsonObject(),sender, context);
                 break;
             default:
                 break;
