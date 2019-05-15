@@ -136,7 +136,7 @@ public class Server
         }
         try
         {
-            Thread.sleep(100);
+            Thread.sleep(2000);
             TaskManager.equeue(this::deleteDeads);
         } 
         catch (InterruptedException ex) 

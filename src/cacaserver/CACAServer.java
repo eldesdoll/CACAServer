@@ -15,7 +15,7 @@ public class CACAServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Server server = new Server(5000);
+        Server server = new Server(1000);
 
         /* 
         //Prueba de envio de mensaje simple

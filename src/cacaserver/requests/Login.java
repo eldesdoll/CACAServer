@@ -8,6 +8,7 @@ package cacaserver.requests;
 import cacaserver.controller.Context;
 import cacaserver.database.Database;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -59,6 +60,8 @@ public class Login
             
             String packet = gson.toJson(response);
             
+            System.out.println(packet);
+            
             out.write(packet.getBytes());
         } 
         catch (IOException ex) 
@@ -85,6 +88,22 @@ public class Login
              * Agregar listas.
              */
         }
+        Hashtable connected = context.getConnectedUsers();
+        JsonArray connectedList = new JsonArray();
+        
+        synchronized(connected)
+        {
+            connected.forEach((socket,username)->
+            {
+                JsonObject user = new JsonObject();
+                user.addProperty("username",(String) username);
+                connectedList.add(user);
+            });
+            connected.notify();
+        }
+        
+        response.add("connected", connectedList);
+        
         Database.returnConnection(connection);
         return response;
     }
