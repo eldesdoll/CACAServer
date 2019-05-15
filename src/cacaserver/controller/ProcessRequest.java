@@ -10,6 +10,8 @@ import cacaserver.requests.AcceptRequest;
 import cacaserver.requests.AddToGroup;
 import cacaserver.requests.DeleteGroup;
 import cacaserver.requests.FriendRequest;
+import cacaserver.requests.GetConversation;
+import cacaserver.requests.GetGroupConversation;
 import cacaserver.requests.Login;
 import cacaserver.requests.ModifyGroup;
 import cacaserver.requests.NewGroup;
@@ -47,40 +49,47 @@ public class ProcessRequest
     {
         logger.info("Got a package from "+sender.getInetAddress());
         JsonObject response = parser.parse(request).getAsJsonObject();
+        JsonObject args = response.get("args").getAsJsonObject();
         switch(response.get("type").getAsString())
         {
             case "login":
-                new Login(response.get("args").getAsJsonObject(),sender, context); 
+                new Login(args,sender, context); 
                 break;
             case "sign":
-                new Sign(response.get("args").getAsJsonObject(),sender);
+                new Sign(args,sender);
                 break;
             case "friend-request":
-                new FriendRequest(response.get("args").getAsJsonObject(),sender, context);
+                new FriendRequest(args,sender, context);
                 break;
             case "accept-request": //Aceptar amigo 
-                new AcceptRequest(response.get("args").getAsJsonObject(),sender, context);
+                new AcceptRequest(args,sender, context);
                 break;
             case "newGroup": //Nuevo grupo 
-                new NewGroup(response.get("args").getAsJsonObject(), sender,context);
+                new NewGroup(args, sender,context);
                 break;
             case "add-to-group":  //Agregar al grupo
-                new AddToGroup(response.get("args").getAsJsonObject(), sender, context);
+                new AddToGroup(args, sender, context);
                 break;
             case "accept-group-request": //Aceptar solicitud de grupo
-                new AcceptGroupRequest(response.get("args").getAsJsonObject(),sender,context);
+                new AcceptGroupRequest(args,sender,context);
                 break;
             case "refresh": //Refrescar 
-                new Refresh(response.get("args").getAsJsonObject(),sender,context);
+                new Refresh(args,sender,context);
                 break;
-            case "deleteGroup":
-                new DeleteGroup (response.get("args").getAsJsonObject(), sender, context);
+            case "deleteGroup": //Borrar grupo
+                new DeleteGroup (args, sender, context);
                 break;
-            case "modifyGroup":
-                new ModifyGroup (response.get("args").getAsJsonObject(), sender, context);
+            case "modifyGroup": //Cambiar asunto
+                new ModifyGroup (args, sender, context);
                 break;
-            case "newPersonal":
-                new NewPersonalMssg (response.get("args").getAsJsonObject(), sender, context);
+            case "newPersonal": //Mensaje personal individual
+                new NewPersonalMssg (args, sender, context);
+                break;
+            case "getPersonal": //Obtener mensajes chat normal 
+                new GetConversation(args,sender, context);
+                break;
+            case "getGroup": //Obtener mensajes chat grupal
+                new GetGroupConversation(args,sender,context);
                 break;
             default:
                 break;
