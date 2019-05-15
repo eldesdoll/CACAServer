@@ -5,9 +5,13 @@
  */
 package cacaserver.requests;
 
+import cacaserver.controller.Context;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,10 +21,13 @@ public class Refresh
 {
     public Refresh(JsonObject args, Socket sender,Context context)
     {
-        JsonObject resp = new JsonObject();
-        resp.addProperty("type","refresh");
-        resp.add("args",new Login(context).updateArgs(args.get("username").getAsString()));
-        sender.getOutputStream().write(new Gson().toJson(resp).getBytes());
-    }
-    
+        try {
+            JsonObject resp = new JsonObject();
+            resp.addProperty("type","refresh");
+            resp.add("args",new Login(context).updateArgs(args.get("username").getAsString()));
+            sender.getOutputStream().write(new Gson().toJson(resp).getBytes());
+        } catch (IOException ex) {
+            Logger.getLogger(Refresh.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }   
 }
