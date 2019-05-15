@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,20 +49,49 @@ public class NewPersonalMssg {
             
             JsonObject response = new JsonObject();
             response.addProperty("type", "newPersonalMssg");
-            response.addProperty("status", newPerMssg());
             
-            Login upd = new Login(context);
-            response.add("args", upd.updateArgs(remitente));
+            if(newPerMssg())
+            {
+                response.addProperty("status", true);            
+                
+                JsonObject msj = new JsonObject();
+                msj.addProperty("remitente", remitente);
+                msj.addProperty("destinatario",destinatario);
+                msj.addProperty("mssg", this.mssg);
+                response.add("args",msj);
+
+                logger.info("New personal message registered with status code "+response.get("status").getAsBoolean());
+
+                Gson gson = new Gson();
+
+                String envio = gson.toJson(response);
+
+                sender.getOutputStream().write(envio.getBytes()); //Se envía al remitente para actualizar su chatsin
+
+                Database.returnConnection(connection);
+
+
+                Hashtable<Socket, String> connected = context.getConnectedUsers();
+
+                synchronized(connected)
+                {
+                    connected.forEach((socket, user )->
+                    {
+                        if((user.equals(remitente) && !socket.equals(this.sender))||user.equals(destinatario))
+                        {
+                            try 
+                            {
+                                socket.getOutputStream().write(envio.getBytes());
+                            } catch (IOException ex) {
+                                Logger.getLogger(NewPersonalMssg.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+
+                    });
+                    connected.notify();
+                }
+            }
             
-            logger.info("New personal message registered with status code "+response.get("status").getAsBoolean());
-            
-            Gson gson = new Gson();
-            
-            String envio = gson.toJson(response);
-            
-            sender.getOutputStream().write(envio.getBytes());
-            
-            Database.returnConnection(connection);
         } catch (IOException ex) {
             logger.log(Level.SEVERE,ex.getMessage());
         }
