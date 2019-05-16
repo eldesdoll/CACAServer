@@ -5,7 +5,9 @@
  */
 package cacaserver.controller;
 
+import cacaserver.controller.Context;
 import cacaserver.requests.AcceptGroupRequest;
+import cacaserver.requests.AcceptPrivate;
 import cacaserver.requests.AcceptRequest;
 import cacaserver.requests.AddToGroup;
 import cacaserver.requests.DeleteGroup;
@@ -16,7 +18,9 @@ import cacaserver.requests.Login;
 import cacaserver.requests.ModifyAlias;
 import cacaserver.requests.ModifyGroup;
 import cacaserver.requests.NewGroup;
+import cacaserver.requests.NewGroupMessage;
 import cacaserver.requests.NewPersonalMssg;
+import cacaserver.requests.PrivateRequest;
 import cacaserver.requests.Refresh;
 import cacaserver.requests.Sign;
 import com.google.gson.JsonObject;
@@ -93,6 +97,15 @@ public class ProcessRequest {
                 break;
             case "setAlias":
                 new ModifyAlias(args, sender, context);
+                break;
+            case "newGroupMessage":
+                new NewGroupMessage(args,sender,context);
+                break;
+            case "private-request":
+                new PrivateRequest(args, sender, context);
+                break;
+            case "accept-private":
+                new AcceptPrivate(args,sender,context);
                 break;
             default:
                 System.out.println("JAJAJ NO CONCUERDA TU MALDITO MENSAJE "+request);
