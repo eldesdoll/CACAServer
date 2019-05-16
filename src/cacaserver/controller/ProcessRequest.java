@@ -20,6 +20,7 @@ import cacaserver.requests.ModifyGroup;
 import cacaserver.requests.NewGroup;
 import cacaserver.requests.NewGroupMessage;
 import cacaserver.requests.NewPersonalMssg;
+import cacaserver.requests.PrivateMessage;
 import cacaserver.requests.PrivateRequest;
 import cacaserver.requests.Refresh;
 import cacaserver.requests.Sign;
@@ -106,6 +107,9 @@ public class ProcessRequest {
                 break;
             case "accept-private":
                 new AcceptPrivate(args,sender,context);
+                break;
+            case "privateMessage":
+                new PrivateMessage(args,sender,context);
                 break;
             default:
                 System.out.println("JAJAJ NO CONCUERDA TU MALDITO MENSAJE "+request);
