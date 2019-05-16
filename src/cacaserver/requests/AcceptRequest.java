@@ -56,15 +56,16 @@ public class AcceptRequest {
             Connection connection = Database.getConnection();
             String status = (this.status)? "'aceptado'" : "'rechazado'";
             String query = "UPDATE amistad SET estado = "+status+" WHERE "
-                    + "propietario = "+owner+" and amigo = "+friend;
+                    + "propietario = "+friend+" and amigo = "+owner;
              PreparedStatement select = connection.prepareStatement(query);
              select.execute();
-            
-            query = "INSERT INTO amistad(estado,propietario,amigo) VALUES "
+            System.out.println(query);
+            query = "INSERT INTO amistad(estado , amigo , propietario) VALUES "
                     + "("+status+","+friend+","+owner+") ON DUPLICATE KEY "
-                    + " UPDATE estado = "+status;
+                    + " UPDATE estado = "+status+" ";
             select = connection.prepareStatement(query);
             select.execute();
+            System.out.println(query);
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(AcceptRequest.class.getName()).log(Level.SEVERE, null, ex);

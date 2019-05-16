@@ -25,6 +25,9 @@ public class Database
     private static String user = "root";
     private static String password = "";
     
+    /**
+     * Inicializa el stack con 3 conexiones
+     */
     static
     {
         logger = Logger.getLogger("Database");
@@ -44,6 +47,10 @@ public class Database
         }
     }
     
+    /**
+     * Pide una conexión a db, si no hay disponibles crea una
+     * @return conexión
+     */
     public static Connection getConnection()
     {
         if(pool.isEmpty())//No hay conexiones disponible
@@ -66,6 +73,10 @@ public class Database
         }
     }
     
+    /**
+     * Devuelve una conexión y la reasigna en el stack
+     * @param connection conexion a regresar
+     */
     public static void returnConnection(Connection connection)
     {
         logger.info("Thread "+Thread.currentThread().getId()+" returned a database connection");

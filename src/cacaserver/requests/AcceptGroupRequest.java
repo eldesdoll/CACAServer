@@ -6,6 +6,7 @@
 package cacaserver.requests;
 
 import cacaserver.controller.Context;
+import cacaserver.database.Database;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class AcceptGroupRequest
     public AcceptGroupRequest(JsonObject args, Socket sender, Context context)
     {
         try {
+            connection = Database.getConnection();
             id = args.get("id").getAsString();
             username = args.get("username").getAsString();
             status = args.get("status").getAsBoolean();
@@ -43,6 +45,7 @@ public class AcceptGroupRequest
             Gson gson = new Gson();
             
             sender.getOutputStream().write(gson.toJson(response).getBytes());
+            Database.returnConnection(connection);
         } catch (IOException ex) {
             Logger.getLogger(AcceptGroupRequest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +56,7 @@ public class AcceptGroupRequest
         try {
             String status = this.status ? "'aceptado'" : "'rechazado'";
             String query = "UPDATE miembro SET estado = "+status+" WHERE "
-                    + "grupo = "+id+" AND username = '"+username+"'";
+                    + "grupo = "+id+" AND usuario = '"+username+"'";
             connection.prepareStatement(query).execute();
             return true;
         } catch (SQLException ex) {

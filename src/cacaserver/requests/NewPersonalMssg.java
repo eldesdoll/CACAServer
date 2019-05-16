@@ -10,7 +10,6 @@ import cacaserver.database.Database;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -91,7 +90,6 @@ public class NewPersonalMssg {
                     connected.notify();
                 }
             }
-            
         } catch (IOException ex) {
             logger.log(Level.SEVERE,ex.getMessage());
         }
@@ -106,7 +104,7 @@ public class NewPersonalMssg {
         {
             
             String query;
-            query = "INSERT INTO chatamigo(mensaje, remitente, destinaatario) VALUES ('"+mssg+"','"+remitente+"','"+destinatario+"')";
+            query = "INSERT INTO chatamigo(mensaje, remitente, destinatario) VALUES ('"+mssg+"','"+remitente+"','"+destinatario+"')";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
             return true;
