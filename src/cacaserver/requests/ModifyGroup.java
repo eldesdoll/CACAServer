@@ -60,6 +60,15 @@ public class ModifyGroup {
                 
                 sender.getOutputStream().write(envio.getBytes());
             }
+            else 
+            {
+                JsonObject response = new JsonObject();
+                response.addProperty("type", "deleteGroup");
+                response.addProperty("status", false);
+                Login upd = new Login(context);
+                response.add("args", upd.updateArgs(username));
+                sender.getOutputStream().write(new Gson().toJson(response).getBytes());
+            }
             
             Database.returnConnection(connection);
         } catch (IOException ex) {
