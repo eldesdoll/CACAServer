@@ -34,7 +34,20 @@ public class ModifyAlias {
     static {
         logger = Logger.getLogger("DeleteGroup");
     }
-
+    
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion se encarga de recibir los datos
+     * del cliente, y hace un llamado a la función
+     * modifyAlias. La funcion prepara y envia una
+     * respuesta al cliente donde especifica si la
+     * actualización de la base de datos fue exitosa
+     * o no.
+     */
     public ModifyAlias(JsonObject args, Socket sender, Context context) {
         try {
             this.sender = sender;
@@ -64,6 +77,16 @@ public class ModifyAlias {
         }
     }
 
+    /**
+     * 
+     * @return 
+     * Esta funcion se encarga de hacer un update
+     * a la base de datos, cambiando el alias de 
+     * el amigo que el cliente haya seleccionado.
+     * La función devuelve verdadero en caso de 
+     * que la actualización de la base de datos 
+     * haya sido exitosa y falso en caso contrario.
+     */
     private boolean modifyAlias() {
         connection = Database.getConnection();
 
