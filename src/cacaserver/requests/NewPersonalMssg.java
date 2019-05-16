@@ -36,7 +36,19 @@ public class NewPersonalMssg {
     {
         logger = Logger.getLogger("NewGroup");
     }
-    
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion recibe los datos enviados por el 
+     * cliente e intenta insertar un mensaje con estos
+     * datos en la base de datos mediante la funcion
+     * newPerMssg. La función prepara y envia la respuesta
+     * al cliente, que marca verdadero si la inserción fue
+     * exitosa y falso en el caso contrario.
+     */
     public NewPersonalMssg(JsonObject args, Socket sender, Context context)
     {
        try {
@@ -95,7 +107,14 @@ public class NewPersonalMssg {
         }
     }
     
-    
+    /**
+     * Esta funcion intenta insertar el la base de datos
+     * un nuevo mensaje con los datos enviados por el
+     * cliemte.
+     * @return 
+     * Si la inserción fue exitosa, la función retorna
+     * Verdadero y en caso contrario devuelve Falso.
+     */
     private boolean newPerMssg()
     {
         connection = Database.getConnection();

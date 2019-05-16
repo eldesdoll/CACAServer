@@ -38,7 +38,21 @@ public class NewGroupMessage {
     static {
         logger = Logger.getLogger("NewGroup");
     }
-
+    
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * Esta clase recibe los datos enviados por el cliente 
+     * y llama newGroupMssg para intentar insertar un nuevo 
+     * mensaje en la base de datos. En caso de que la 
+     * inserción haya sido exitosa, se obtiene la lista de
+     * todos los usuarios registrados en el grupo por medio de
+     * la función getUsers para, posteriormete enviarles a todos
+     * la repsuesta que contiene el mensaje, el remitente y el 
+     * id del grupo.
+     */
     public NewGroupMessage(JsonObject args, Socket sender, Context context) {
         try {
             this.sender = sender;
@@ -98,7 +112,16 @@ public class NewGroupMessage {
             logger.log(Level.SEVERE, ex.getMessage());
         }
     }
-
+    
+    /**
+     * Esta funcion es usada para intentar insertar un nuevo
+     * mensaje en la base de datos con los datos enviados por
+     * el cliente. 
+     * @return 
+     * La clase retorna verdadero en caso de que la operación
+     * con la base de datos haya sido exitosa y falso en el 
+     * caso contrario.
+     */
     private boolean newGroupMssg() {
         connection = Database.getConnection();
 
@@ -115,6 +138,14 @@ public class NewGroupMessage {
         }
     }
 
+    /**
+     * Esta función es usada para realizar una consulta a la 
+     * base de datos, la cual consulta todos los usuarios
+     * registrados en el grupo que la clase esté manipulando.
+     * @return 
+     * La clase retorna todos los usuarios de un grupo por 
+     * medio de un ArrayList de Strings.
+     */
     private ArrayList<String> getUsers() {
         try {
             ArrayList<String> users = new ArrayList<String>();

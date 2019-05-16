@@ -36,6 +36,20 @@ public class DeleteGroup {
         logger = Logger.getLogger("DeleteGroup");
     }
     
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta función se encarga de verificar que el usuario
+     * que haya enviado la peticion de eliminación de grupo
+     * sea el administrador del grupo. En caso de que este
+     * lo sea, se intenta eliminar de la base de datos el 
+     * grupo y se responde al cliente con el status. El status
+     * será Verdadero si el campo se pudo eliminar o Falso en
+     * caso contrario.
+     */
     public DeleteGroup(JsonObject args, Socket sender, Context context) {
         try {
             this.sender = sender;
@@ -74,6 +88,13 @@ public class DeleteGroup {
         }
     }
     
+    /**
+     * Esta funcion consulta en la base de datos
+     * el nombre del administrador del grupo que 
+     * se está manipluando en la clase.
+     * @return 
+     * Regresa el nombre del administrador
+     */
     private String getAdmin() {
         try {
             String admin = null;
@@ -95,6 +116,15 @@ public class DeleteGroup {
  
     }
     
+    
+    /**
+     * Esta funcion elimina en la base de datos
+     * el grupo que se está manipuñando en la base.
+     * @return 
+     * En caso de que la función se pudo hacer con
+     * exito, se regresa true, en caso contrario
+     * se regresa false
+     */
     private boolean deleteGroup() {
         connection = Database.getConnection();
         
