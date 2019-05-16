@@ -8,7 +8,7 @@ package cacaserver.requests;
 import cacaserver.controller.Context;
 import cacaserver.database.Database;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonObject;   
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;

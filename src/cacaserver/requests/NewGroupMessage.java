@@ -10,6 +10,7 @@ import cacaserver.database.Database;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,9 +23,9 @@ import java.util.logging.Logger;
  *
  * @author manie
  */
-public class NewPersonalMssg {
+public class NewGroupMessage {
     private String remitente;
-    private String destinatario;
+    private String gId;
     private String mssg;
     private static Logger logger;
     private Connection connection;
@@ -37,29 +38,29 @@ public class NewPersonalMssg {
         logger = Logger.getLogger("NewGroup");
     }
     
-    public NewPersonalMssg(JsonObject args, Socket sender, Context context)
+    public NewGroupMessage(JsonObject args, Socket sender, Context context)
     {
        try {
             this.sender = sender;
             this.remitente = args.get("remitente").getAsString();
-            this.destinatario = args.get("destinatario").getAsString();
+            this.gId = args.get("groupId").getAsString();
             this.mssg = args.get("mssg").getAsString();
             connection = Database.getConnection();
             
             JsonObject response = new JsonObject();
-            response.addProperty("type", "newPersonalMssg");
+            response.addProperty("type", "newGroupMssg");
             
-            if(newPerMssg())
+            if(newGroupMssg())
             {
                 response.addProperty("status", true);            
                 
                 JsonObject msj = new JsonObject();
-                msj.addProperty("remitente", remitente);
-                msj.addProperty("destinatario",destinatario);
+                msj.addProperty("id", this.gId);                
                 msj.addProperty("mssg", this.mssg);
+                msj.addProperty("remitente", this.remitente);
                 response.add("args",msj);
 
-                logger.info("New personal message registered with status code "+response.get("status").getAsBoolean());
+                logger.info("New group message registered with status code "+response.get("status").getAsBoolean());
 
                 Gson gson = new Gson();
 
@@ -69,7 +70,7 @@ public class NewPersonalMssg {
 
                 Database.returnConnection(connection);
 
-
+                /*
                 Hashtable<Socket, String> connected = context.getConnectedUsers();
 
                 synchronized(connected)
@@ -89,14 +90,16 @@ public class NewPersonalMssg {
                     });
                     connected.notify();
                 }
+                */
             }
+            
         } catch (IOException ex) {
             logger.log(Level.SEVERE,ex.getMessage());
         }
     }
     
     
-    private boolean newPerMssg()
+    private boolean newGroupMssg()
     {
         connection = Database.getConnection();
         
@@ -104,7 +107,7 @@ public class NewPersonalMssg {
         {
             
             String query;
-            query = "INSERT INTO chatamigo(mensaje, remitente, destinatario) VALUES ('"+mssg+"','"+remitente+"','"+destinatario+"')";
+            query = "INSERT INTO chatgrupo(mensaje, remitente, grupo) VALUES ('"+mssg+"','"+remitente+"','"+gId+"')";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
             return true;
