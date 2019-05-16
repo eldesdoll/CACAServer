@@ -34,6 +34,7 @@ public class GetGroupConversation {
             
             JsonObject resp = new JsonObject();
             resp.addProperty("type", "responseGroup");
+            resp.addProperty("id", id);
             
             resp.add("args", getConversation());
             
@@ -49,7 +50,7 @@ public class GetGroupConversation {
         JsonArray array = new JsonArray();
         try {
             String query = "SELECT * FROM chatgrupo WHERE grupo = "+id+
-                    "ORDER BY hora ASC";
+                    " ORDER BY hora ASC";
             ResultSet result = connection.prepareStatement(query).executeQuery();
             while(result.next())
             {

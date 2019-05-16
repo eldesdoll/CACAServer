@@ -20,6 +20,14 @@ public class Context
     private ArrayList<Socket> clients;
     private Hashtable<Socket, String> connectedUsers;
     
+    /**
+     * Este objeto mantiene todos los objetos necesarios
+     * para el server, de esta forma se tiene un acceso rápido
+     * a recursos declarados entre clases
+     * @param server Socket usado para correr el servidor
+     * @param clients Lista de clientes conectados
+     * @param connectedUsers  Lista de usuarios conectados
+     */
     public Context(ServerSocket server, ArrayList<Socket> clients, Hashtable<Socket, String> connectedUsers)
     {
         this.server = server;

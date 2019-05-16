@@ -65,6 +65,10 @@ public class Server
         context = new Context(server, clients, connectedUsers);
     }
     
+    /**
+     * Este método se agrega al taskmannager para correr infinitamente,
+     * llama al procesador de request como otra task
+     */
     public void getData()
     {
         while(true)
@@ -98,7 +102,11 @@ public class Server
         }
     }
     
-    
+    /**
+     * Esta función se llama periodicamente para confirmar que
+     * aún sigan con conexión los usuarios que están conectados,
+     * si no lo están los borra como recurso y actualiza
+     */
     public void deleteDeads()
     {
         synchronized(clients) //Se maneja de forma sincronizada para evitar fallas
@@ -150,6 +158,10 @@ public class Server
         }
     }
     
+    /**
+     * Este método esta corriendo infinitamente
+     * y es el encargado de recibir las conexiones que se vayan haciendo
+     */
     public void getConnections()
     {
         while(true)
