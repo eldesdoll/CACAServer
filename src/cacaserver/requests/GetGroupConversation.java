@@ -26,6 +26,19 @@ public class GetGroupConversation {
     private String id;
     private Connection connection;
     
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion obtiene los datos enviados por el cliente
+     * e intenta obtener toda la conversación de un grupo. En
+     * caso de que se haya podido obtener la conversación, la
+     * función prepara y envia una respuesta marcando como verdadero
+     * y en caso de que la consulta haya presentado un error, como
+     * falso.
+     */
     public GetGroupConversation(JsonObject args, Socket sender, Context context)
     {
         try {
@@ -45,6 +58,15 @@ public class GetGroupConversation {
         }
     }
     
+    /**
+     * 
+     * @return 
+     * Esta función intenta obtener todos los mensajes enviados
+     * en un grupo guardados en la base de datos. En caso de haberlos
+     * obtenidos, estos se guardan en un array json, el cual es retornado
+     * al final de la función. En caso de que haya fallado al consulta
+     * se regresa un arreglo json vacío.
+     */
     private JsonArray getConversation()
     {
         JsonArray array = new JsonArray();

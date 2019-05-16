@@ -27,6 +27,18 @@ public class AcceptGroupRequest
     private boolean status;
     private Connection  connection;
     
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context
+     * 
+     * Esta funcion recibe los datos enviados por un cliente
+     * e intenta actualizar la base de datos. La función
+     * prepara y envia una respuesta que marca como verdadero
+     * si la operación fue exitosa o en caso contrario con 
+     * falso
+     */
     public AcceptGroupRequest(JsonObject args, Socket sender, Context context)
     {
         try {
@@ -51,6 +63,15 @@ public class AcceptGroupRequest
         }
     }
     
+    /**
+     * Esta funcion intenta actualizar un registro en la
+     * base de datos cont los datos enviados por el usuario.
+     * Se marca como aceptado o rechazado una invitación a un
+     * grupo. En caso de que la actualización de la base de 
+     * datos se haya realizado con éxito, la función devuelve
+     * un verdadero y en caso contrario devuelve un falso.
+     * @return 
+     */
     private boolean accept()
     {
         try {

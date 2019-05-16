@@ -24,6 +24,16 @@ public class PrivateMessage
    private String remitente;
    private String mensaje;
    
+   /**
+    * 
+    * @param args
+    * @param sender
+    * @param context 
+    * 
+    * Esta funcion intenta enviar un mensaje priavado.
+    * La funcion envia el mensaje, el remitente y el 
+    * destinatario al cliente correspondiente.
+    */
    public PrivateMessage(JsonObject args, Socket sender, Context context)
    {
        destinatario = args.get("destinatario").getAsString();

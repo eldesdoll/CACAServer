@@ -38,11 +38,24 @@ public class Login {
     static {
         logger = Logger.getLogger("Login");
     }
-
+    
+    /**
+     * 
+     * @param context 
+     * Esta funcion obtiene el contexto de la clase
+     */
     public Login(Context context) {
         this.context = context;
     }
-
+    
+    /**
+     * 
+     * @param username
+     * @return 
+     * 
+     * Esta funcion actualiza los argumentos que se usaran
+     * para crear la vista principal del programa
+     */
     public JsonObject updateArgs(String username) 
     {
         connection = Database.getConnection();
@@ -50,7 +63,18 @@ public class Login {
         return getArgs();
 
     }
-
+    
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion recibe los datos enviados por el cliente
+     * e intenta hacer login con ellos. Esta funcion prepara
+     * y envia al cliente todos los datos necesarios para
+     * crear la vista principal del programa.
+     */
     public Login(JsonObject args, Socket sender, Context context) {
         this.sender = sender;
         this.context = context;
@@ -78,7 +102,14 @@ public class Login {
             logger.log(Level.SEVERE, ex.getMessage());
         }
     }
-
+    
+    /**
+     * 
+     * @return 
+     * Esta funcion obtiene los datos necesarios para crear el 
+     * JsonObject que se usará para rellenar los paneles de la 
+     * vista principal.
+     */
     private JsonObject getArgs() 
     {
         JsonObject response = new JsonObject();
@@ -117,6 +148,15 @@ public class Login {
         return response;
    }
 
+    /**
+     * 
+     * @param statusCode
+     * @return 
+     * 
+     * Esta funcion obtiene los datos necesarios para crear el 
+     * JsonObject que se usará para rellenar los paneles de la 
+     * vista principal.
+     */
     private JsonObject getArgs(boolean statusCode) {
         JsonObject response = new JsonObject();
         response.addProperty("status", statusCode);
@@ -166,6 +206,14 @@ public class Login {
         return response;
     }
     
+    /**
+     * Esta funcion consulta en la base de datos todos 
+     * los usuarios que son amigos del cliente. Todos los
+     * amigos se van añadiendo a una JsonArray.
+     * @return 
+     * Se devuelve el JsonArray que contiene todos los amigos
+     * del cliente.
+     */
     private JsonArray getFriends()
     {
         JsonArray friends = new JsonArray();
@@ -190,6 +238,13 @@ public class Login {
         return friends;
     }
     
+    /**
+     * Esta funcion consulta en la base de datos en que grupos el
+     * cliente se encuentra y se agregan al un JsonArray.
+     * @return 
+     * La funcion devuelve el JsonArray que contiene todos los
+     * grupos en los que el usuario se encuentra.
+     */
     private JsonArray getGroups()
     {
         JsonArray groups = new JsonArray();
@@ -212,6 +267,13 @@ public class Login {
         return groups;
     }
 
+    /**
+     * Esta funcion obtiene los nombres de todos los usuarios
+     * que no sea el propio cliente.
+     * @return 
+     * La funcion devuelve un array list de Strings que contienen
+     * los nombre de los usuarios.
+     */
     private ArrayList<String> getEveryUser() {
         ArrayList<String> all = new ArrayList<>();
         try {
@@ -228,7 +290,14 @@ public class Login {
         }
         return all;
     }
-
+    
+    /**
+     * Esta funcion está encargada de hacer consultas a multiples
+     * tablas de la base de datos para saber si tenemos notificaciones.
+     * En caso de existir, se agregaran a un JsonArray.
+     * @return 
+     * La funcion devuelve el JsonArray con todas las notificaciones.
+     */
     private JsonArray getNotifications() {
         JsonArray notifications = new JsonArray();
         try {
@@ -267,7 +336,15 @@ public class Login {
         }
         return notifications;
     }
-
+    
+    /**
+     * Esta funcion esta encargada de comprobar si el nombre de usuario
+     * que envio el cliente está dentro de la base de datos. En caso de
+     * que si exista, se comprueba que la contraseña enviada por el 
+     * cliente. Si la contraseña no coincide con la de la base de
+     * datos, o el nombre de usuario no existe, se devuelve falso.
+     * @return 
+     */
     private boolean getLogin() {
         connection = Database.getConnection();
 

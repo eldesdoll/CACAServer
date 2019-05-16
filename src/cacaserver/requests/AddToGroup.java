@@ -27,6 +27,18 @@ public class AddToGroup
     private String id;
     private Connection connection;
     
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion recibe los datos enviados por un cliente
+     * e intenta insertar nuevos miembros en un grupo. La 
+     * función prepara y envia una respuesta que marca con un
+     * verdadero si la inserción fue exitosa o en caso contrario
+     * con un falso.
+     */
     public AddToGroup(JsonObject args, Socket sender, Context context)
     {
         try 

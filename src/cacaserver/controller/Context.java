@@ -54,11 +54,24 @@ public class Context
     public Hashtable<Socket, String> getConnectedUsers() {
         return connectedUsers;
     }
-
+    
+    /**
+     * 
+     * @param connectedUsers 
+     */
     public void setConnectedUsers(Hashtable<Socket, String> connectedUsers) {
         this.connectedUsers = connectedUsers;
     }
     
+    /**
+     * 
+     * @param user
+     * @return 
+     * 
+     * Esta funcion devuelve la conexión que 
+     * coincida con el nombre que recibió como 
+     * parametro
+     */
     public ArrayList<Socket> getSocketsByUsername(String user)
     {
         ArrayList<Socket> connectedOn = new ArrayList<>();
