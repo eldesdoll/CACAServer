@@ -36,6 +36,19 @@ public class NewGroup {
         logger = Logger.getLogger("NewGroup");
     }
     
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta función recibe los datos enviados por el 
+     * cliente y manda a llamar a la función newGroup
+     * con estos datos para intentar realizar una 
+     * inserción en la base de datos. La función 
+     * prepara y envía una respuesta al usuario, 
+     * marcando si la operación fue exitosa o no.
+     */
     public NewGroup(JsonObject args, Socket sender, Context context)
     {
        try {
@@ -46,7 +59,7 @@ public class NewGroup {
             
             JsonObject response = new JsonObject();
             response.addProperty("type", "newGroup");
-            response.addProperty("status", getGroup());
+            response.addProperty("status", newGroup());
             
             Login upd = new Login(context);
             response.add("args", upd.updateArgs(username));
@@ -65,14 +78,21 @@ public class NewGroup {
         }
     }
     
-    
-    private boolean getGroup()
+    /**
+     * 
+     * @return 
+     * Esta clase intenta insertar en la base de datos 
+     * un nuevo grupo con los datos enviados por el 
+     * cliente. En caso de que la operación se llevó
+     * a cabo sin errores, la función retorna 
+     * verdadero, en caso contrario devuelve falso.
+     */
+    private boolean newGroup()
     {
         connection = Database.getConnection();
         
         try 
         {
-            
             String query;
             query = "INSERT INTO grupo(asunto, administrador) VALUES ('"+gname+"','"+username+"')";
             PreparedStatement stmt = connection.prepareStatement(query);

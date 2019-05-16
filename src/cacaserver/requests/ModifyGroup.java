@@ -36,7 +36,22 @@ public class ModifyGroup {
     static {
         logger = Logger.getLogger("DeleteGroup");
     }
-    
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta función recibe los datos enviados
+     * por el cliente. Primero verifica que el 
+     * cliente que haya enviado la consulta sea
+     * el adminitrador del grupo. Si resulta ser
+     * cierto, se intenta actualizar la base de 
+     * datos con el asunto enviado por el cliente.
+     * La función prepara y envia una respuesta al 
+     * cliente indicando si la actualización fue 
+     * posible o no.
+     */
     public ModifyGroup(JsonObject args, Socket sender, Context context) {
         try {
             this.sender = sender;
@@ -76,6 +91,14 @@ public class ModifyGroup {
         }
     }
     
+    /**
+     * 
+     * @return 
+     * Esta funcion hace una consulta a la base de datos
+     * la cual devuelve el nombre del administrador del
+     * grupo que la clase está manipulando. La función 
+     * devuelve este mismo nombre del administrador.
+     */
     private String getAdmin() {
         try {
             String admin = null;
@@ -97,6 +120,15 @@ public class ModifyGroup {
  
     }
     
+    /**
+     * 
+     * @return 
+     * Esta clase se intenta actualizar la base de
+     * datos, para cambiar el asunto de el grupo que
+     * la clase está manipulando. Si la actualizacion
+     * se pudo llevar a cabo, la función devuelve
+     * verdadero, en caso contrario, devuelve falso.
+     */
     private boolean modifyGroup() {
         connection = Database.getConnection();
         
