@@ -39,6 +39,7 @@ public class GetConversation
             
             JsonObject response = new JsonObject();
             response.addProperty("type","responseChat");
+            response.addProperty("with",dest);
             response.add("args", getConversation());
 
             sender.getOutputStream().write(new Gson().toJson(response).getBytes());
@@ -51,9 +52,10 @@ public class GetConversation
     {
         JsonArray array = new JsonArray();
         try {
-            String query = "SELECT * FROM chatamigo WHERE (remitente = '" + username + "' AND"
-                    + "destinatatio = '" + dest + "') OR (destinatatio = '" + username + "' AND"
+            String query = "SELECT * FROM chatamigo WHERE (remitente = '" + username + "' AND "
+                    + "destinatario = '" + dest + "') OR (destinatario = '" + username + "' AND"
                     + " remitente = '" + dest + "') ORDER BY hora ASC";
+            System.out.println(query);
             PreparedStatement select = connection.prepareStatement(query);
             ResultSet result = select.executeQuery();
             while(result.next())
