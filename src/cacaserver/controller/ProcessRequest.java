@@ -91,10 +91,11 @@ public class ProcessRequest {
             case "getGroup": //Obtener mensajes chat grupal
                 new GetGroupConversation(args, sender, context);
                 break;
-            case "modifyAlias":
+            case "setAlias":
                 new ModifyAlias(args, sender, context);
                 break;
             default:
+                System.out.println("JAJAJ NO CONCUERDA TU MALDITO MENSAJE "+request);
                 break;
         }
     }
