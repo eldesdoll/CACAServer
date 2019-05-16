@@ -27,6 +27,20 @@ public class FriendRequest
     String petition;
     Connection connection; 
     
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion recibe los datos enviados por el
+     * cliente, e intenta crear una nueva amistad
+     * entre dos usuarios. La función prepara y envia 
+     * una respuesta que marca con un verdadero en caso de que
+     * la insercióna la base de datos fue exitosa o en un caso
+     * contrario con un falso.
+     * 
+     */
     public FriendRequest(JsonObject args, Socket sender, Context context)
     {
         try {
@@ -59,9 +73,6 @@ public class FriendRequest
             String query = "INSERT INTO amistad(propietario, amigo ) VALUES ('"+user+"','"+petition+"')";
             PreparedStatement result = connection.prepareStatement(query);
             result.execute();
-            /*query = "INSERT INTO amistad(propietario, amigo ) VALUES ('"+petition+"','"+user+"')";
-            result = connection.prepareStatement(query);
-            result.execute();*/
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(FriendRequest.class.getName()).log(Level.SEVERE, null, ex);

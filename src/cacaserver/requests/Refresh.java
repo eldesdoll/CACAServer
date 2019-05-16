@@ -19,6 +19,17 @@ import java.util.logging.Logger;
  */
 public class Refresh 
 {
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion realiza el mismo procedimiento
+     * que en login, de manera que se devuelven todos
+     * los datos necesarios para crear la vista principal.
+     * 
+     */
     public Refresh(JsonObject args, Socket sender,Context context)
     {
         try {
