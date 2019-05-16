@@ -170,7 +170,8 @@ public class Login {
     {
         JsonArray friends = new JsonArray();
         try {
-            String query  = "SELECT amigo,alias FROM amistad WHERE propietario = '"+username+"'"
+            String query  = "SELECT amigo,alias FROM amistad WHERE "
+                    + "propietario = '"+username+"'"
                     + " AND estado='aceptado'";
             
             PreparedStatement select = connection.prepareCall(query);
@@ -249,7 +250,7 @@ public class Login {
                 it.addProperty("origin", result.getString("propietario"));
                 notifications.add(it);
             }
-            query = "SELECT grupo.asunto as arg FROM grupo, miembro "
+            query = "SELECT grupo.asunto as arg, grupo.id as id FROM grupo, miembro "
                     + "WHERE grupo.id = miembro.grupo AND estado = 'invitado'"
                     + "AND usuario = '" + username + "'";
             select = connection.prepareStatement(query);
@@ -258,6 +259,7 @@ public class Login {
                 JsonObject it = new JsonObject();
                 it.addProperty("type", "group");
                 it.addProperty("origin", result.getString("arg"));
+                it.addProperty("id", result.getString("id"));
                 notifications.add(it);
             }
         } catch (SQLException ex) {

@@ -75,7 +75,7 @@ public class NewPersonalMssg {
                 synchronized(connected)
                 {
                     connected.forEach((socket, user )->
-                    {
+                    {                        
                         if((user.equals(remitente) && !socket.equals(this.sender))||user.equals(destinatario))
                         {
                             try 
