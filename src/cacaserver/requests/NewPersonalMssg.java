@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  * @author manie
  */
 public class NewPersonalMssg {
+
     private String remitente;
     private String destinatario;
     private String mssg;
@@ -30,48 +31,43 @@ public class NewPersonalMssg {
     private Connection connection;
     private Context context;
     private Socket sender;
-    
-    
-    static
-    {
+
+    static {
         logger = Logger.getLogger("NewGroup");
     }
+
     /**
-     * 
+     *
      * @param args
      * @param sender
-     * @param context 
-     * 
-     * Esta funcion recibe los datos enviados por el 
-     * cliente e intenta insertar un mensaje con estos
-     * datos en la base de datos mediante la funcion
-     * newPerMssg. La función prepara y envia la respuesta
-     * al cliente, que marca verdadero si la inserción fue
-     * exitosa y falso en el caso contrario.
+     * @param context
+     *
+     * Esta funcion recibe los datos enviados por el cliente e intenta insertar
+     * un mensaje con estos datos en la base de datos mediante la funcion
+     * newPerMssg. La función prepara y envia la respuesta al cliente, que marca
+     * verdadero si la inserción fue exitosa y falso en el caso contrario.
      */
-    public NewPersonalMssg(JsonObject args, Socket sender, Context context)
-    {
-       try {
+    public NewPersonalMssg(JsonObject args, Socket sender, Context context) {
+        try {
             this.sender = sender;
             this.remitente = args.get("remitente").getAsString();
             this.destinatario = args.get("destinatario").getAsString();
             this.mssg = args.get("mssg").getAsString();
             connection = Database.getConnection();
-            
+
             JsonObject response = new JsonObject();
             response.addProperty("type", "newPersonalMssg");
-            
-            if(newPerMssg())
-            {
-                response.addProperty("status", true);            
-                
+
+            if (newPerMssg()) {
+                response.addProperty("status", true);
+
                 JsonObject msj = new JsonObject();
                 msj.addProperty("remitente", remitente);
-                msj.addProperty("destinatario",destinatario);
+                msj.addProperty("destinatario", destinatario);
                 msj.addProperty("mssg", this.mssg);
-                response.add("args",msj);
+                response.add("args", msj);
 
-                logger.info("New personal message registered with status code "+response.get("status").getAsBoolean());
+                logger.info("New personal message registered with status code " + response.get("status").getAsBoolean());
 
                 Gson gson = new Gson();
 
@@ -81,17 +77,13 @@ public class NewPersonalMssg {
 
                 Database.returnConnection(connection);
 
-
                 Hashtable<Socket, String> connected = context.getConnectedUsers();
 
-                synchronized(connected)
-                {
-                    connected.forEach((socket, user )->
-                    {                        
-                        if((user.equals(remitente) && !socket.equals(this.sender))||user.equals(destinatario))
-                        {
-                            try 
-                            {
+                synchronized (connected) {
+                    connected.forEach((socket, user)
+                            -> {
+                        if ((user.equals(remitente) && !socket.equals(this.sender)) || user.equals(destinatario)) {
+                            try {
                                 socket.getOutputStream().write(envio.getBytes());
                             } catch (IOException ex) {
                                 Logger.getLogger(NewPersonalMssg.class.getName()).log(Level.SEVERE, null, ex);
@@ -103,33 +95,28 @@ public class NewPersonalMssg {
                 }
             }
         } catch (IOException ex) {
-            logger.log(Level.SEVERE,ex.getMessage());
+            logger.log(Level.SEVERE, ex.getMessage());
         }
     }
-    
+
     /**
-     * Esta funcion intenta insertar el la base de datos
-     * un nuevo mensaje con los datos enviados por el
-     * cliemte.
-     * @return 
-     * Si la inserción fue exitosa, la función retorna
-     * Verdadero y en caso contrario devuelve Falso.
+     * Esta funcion intenta insertar el la base de datos un nuevo mensaje con
+     * los datos enviados por el cliemte.
+     *
+     * @return Si la inserción fue exitosa, la función retorna Verdadero y en
+     * caso contrario devuelve Falso.
      */
-    private boolean newPerMssg()
-    {
+    private boolean newPerMssg() {
         connection = Database.getConnection();
-        
-        try 
-        {
-            
+
+        try {
+
             String query;
-            query = "INSERT INTO chatamigo(mensaje, remitente, destinatario) VALUES ('"+mssg+"','"+remitente+"','"+destinatario+"')";
+            query = "INSERT INTO chatamigo(mensaje, remitente, destinatario) VALUES ('" + mssg + "','" + remitente + "','" + destinatario + "')";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
             return true;
-        }
-        catch(SQLException  ex)
-        {
+        } catch (SQLException ex) {
             logger.log(Level.SEVERE, ex.getMessage());
             return false;
         }

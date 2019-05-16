@@ -35,6 +35,18 @@ public class Sign
         logger = Logger.getLogger("Sign");
     }
     
+    /**
+     * 
+     * @param args
+     * @param sender 
+     * Esta funcion recibe los datos enviados por
+     * el cliente y llama la función register para
+     * intentar hacer la creación del registro del 
+     * usuario en la base de datos. Esta funcion
+     * prepara y envia una respuesta la cual marca
+     * como verdadero en caso de que la creación del
+     * usuario fue exitosa y falsa en caso contrario.
+     */
     public Sign(JsonObject args, Socket sender)
     {
         try {
@@ -61,6 +73,16 @@ public class Sign
         }
     }
     
+    /**
+     * Esta función intenta insertar en la base
+     * de datos un nuevo registro de usuario con
+     * los datos enviados por el cliente.
+     * @return 
+     * En caso de que la inserción a la base de 
+     * datos fue exitosa, la función devuelve 
+     * verdadero, y en caso contrario, devuelve
+     * falso.
+     */
     public boolean register()
     {
         try {

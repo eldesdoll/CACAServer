@@ -19,7 +19,15 @@ import java.util.logging.Logger;
  * @author ivan_
  */
 public class AcceptPrivate {
-    
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta función es usada para aceptar solicitudes de conversación
+     * privada, es decir, que no son amigos.
+     */
     public AcceptPrivate(JsonObject args, Socket sender, Context context)
     {
         String requester = args.get("requester").getAsString();

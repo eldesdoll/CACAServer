@@ -23,6 +23,16 @@ public class PrivateRequest
     private String requester;
     private String requested;
     
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta función intenta enviar una solicitud de conversación
+     * a un usuario. Envia como respuesta si la solicitud pudo
+     * ser enviada o no.
+     */
     public PrivateRequest(JsonObject args, Socket sender, Context context)
     { 
         requester = args.get("requester").getAsString();
