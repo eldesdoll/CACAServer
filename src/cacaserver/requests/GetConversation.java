@@ -29,7 +29,20 @@ public class GetConversation
     private String username;
     private String dest;
     private Connection connection;
-
+    
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion obtiene los datos enviadosp por el cliente
+     * y llamda a la funcion getConversation para intentar obtener
+     * la conversacion entre dos personas. La funcion prepara y 
+     * envia una respuesta marcando si la operación de la base de 
+     * datos fue exitosa con un verdader o en caso contrario con un
+     * falso.
+     */
     public GetConversation(JsonObject args, Socket sender, Context context) 
     {
         try {
@@ -48,6 +61,12 @@ public class GetConversation
         }
     }
 
+    /**
+     * La funcion obtiene todos los mensajes enviados entre dos personas
+     * y los guarda en un array json.
+     * @return 
+     * Esta funcion retorna el array de json anteriormente generado.
+     */
     public JsonArray getConversation() 
     {
         JsonArray array = new JsonArray();

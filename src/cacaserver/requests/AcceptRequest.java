@@ -27,6 +27,16 @@ public class AcceptRequest {
     private String friend;
     private String owner;
     
+    /**
+     * 
+     * @param args
+     * @param sender
+     * @param context 
+     * 
+     * Esta funcion es usada para intentar aceptar o rechazar una solicitud
+     * de amistad. Prepara y devulve una respuesta al cliente, diciendo si 
+     * la operación fue exitosa o no.
+     */
     public AcceptRequest(JsonObject args, Socket sender, Context context)
     {
         try {
@@ -50,6 +60,15 @@ public class AcceptRequest {
         }
     }
     
+    /**
+     * 
+     * @return 
+     * Esta funcion actualiza la base de datos y crea la amistad cuando
+     * el cliente decidió aceptar la solicitud de amistad. En caso de que
+     * el cliente haya decidido rechzarla, solamente de marca como rechazada.
+     * La función devuelve verdadero en caso de que la operaciones con la base 
+     * de datos fueron exitosas, o falso en el caso contrario.
+     */
     private boolean accept()
     {
         try {
