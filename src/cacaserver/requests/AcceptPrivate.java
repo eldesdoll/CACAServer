@@ -25,7 +25,7 @@ public class AcceptPrivate {
         String requester = args.get("requester").getAsString();
         
         Hashtable<Socket, String> conn = context.getConnectedUsers();
-        
+       
         synchronized(conn)
         {
             conn.forEach((_s,_u)->
@@ -38,6 +38,7 @@ public class AcceptPrivate {
                         req.addProperty("type", "accept-private");
                         req.add("args",args);
                         _s.getOutputStream().write(new Gson().toJson(req).getBytes());
+                        
                     } catch (IOException ex) 
                     {
                         Logger.getLogger(AcceptPrivate.class.getName()).log(Level.SEVERE, null, ex);
